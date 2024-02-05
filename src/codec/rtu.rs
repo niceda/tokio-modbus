@@ -76,6 +76,9 @@ impl FrameDecoder {
             );
             self.dropped_bytes.clear();
         }
+
+        log::trace!("{:X}", adu_buf);
+
         let slave_id = adu_buf.split_to(1)[0];
         let pdu_data = adu_buf.freeze();
 
@@ -339,6 +342,9 @@ impl<'a> Encoder<RequestAdu<'a>> for ClientCodec {
         encode_request_pdu(buf, &request);
         let crc = calc_crc(&buf[buf_offset..]);
         buf.put_u16(crc);
+
+        log::trace!("{buf:X}");
+
         Ok(())
     }
 }

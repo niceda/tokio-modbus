@@ -90,6 +90,8 @@ impl Decoder for AduDecoder {
 
         let pdu_data = buf.split_to(pdu_len).freeze();
 
+        log::trace!("{:X}{:X}", header_data, pdu_data);
+
         Ok(Some((header, pdu_data)))
     }
 }
@@ -138,6 +140,7 @@ impl<'a> Encoder<RequestAdu<'a>> for ClientCodec {
         buf.put_u16(u16_len(request_pdu_size + 1));
         buf.put_u8(hdr.unit_id);
         encode_request_pdu(buf, &request);
+        log::trace!("{buf:X}");
         Ok(())
     }
 }
