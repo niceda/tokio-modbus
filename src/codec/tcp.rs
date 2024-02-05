@@ -97,6 +97,15 @@ impl Decoder for AduDecoder {
 
         let pdu_data = buf.split_to(pdu_len).freeze();
 
+        let mut formatted_vec = header_data.as_ref().to_vec();
+        formatted_vec.extend_from_slice(pdu_data.as_ref());
+        let formatted_vec = formatted_vec
+            .iter()
+            .map(|x| format!("[{x:02X}]"))
+            .collect::<Vec<String>>();
+        let joined_string = formatted_vec.join("");
+        log::trace!("{joined_string}");
+
         Ok(Some((header, pdu_data)))
     }
 }
@@ -158,6 +167,16 @@ impl<'a> Encoder<RequestAdu<'a>> for ClientCodec {
         buf.put_u16(u16_len(pdu_data.len() + 1));
         buf.put_u8(hdr.unit_id);
         buf.put_slice(&pdu_data);
+
+        let formatted_vec = buf
+            .as_ref()
+            .to_vec()
+            .iter()
+            .map(|x| format!("[{x:02X}]"))
+            .collect::<Vec<String>>();
+        let joined_string = formatted_vec.join("");
+        log::trace!("{joined_string}");
+
         Ok(())
     }
 }

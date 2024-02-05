@@ -76,6 +76,16 @@ impl FrameDecoder {
             );
             self.dropped_bytes.clear();
         }
+
+        let formatted_vec = adu_buf
+            .as_ref()
+            .to_vec()
+            .iter()
+            .map(|x| format!("[{x:02X}]"))
+            .collect::<Vec<String>>();
+        let joined_string = formatted_vec.join("");
+        log::trace!("{joined_string}");
+
         let slave_id = adu_buf.split_to(1)[0];
         let pdu_data = adu_buf.freeze();
 
@@ -350,6 +360,16 @@ impl<'a> Encoder<RequestAdu<'a>> for ClientCodec {
         buf.put_slice(&pdu_data);
         let crc = calc_crc(buf);
         buf.put_u16(crc);
+
+        let formatted_vec = buf
+            .as_ref()
+            .to_vec()
+            .iter()
+            .map(|x| format!("[{x:02X}]"))
+            .collect::<Vec<String>>();
+        let joined_string = formatted_vec.join("");
+        log::trace!("{joined_string}");
+
         Ok(())
     }
 }
