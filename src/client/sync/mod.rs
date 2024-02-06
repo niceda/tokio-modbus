@@ -9,6 +9,9 @@ pub mod rtu;
 #[cfg(feature = "tcp-sync")]
 pub mod tcp;
 
+#[cfg(feature = "rtu-over-tcp-sync")]
+pub mod rtu_over_tcp;
+
 use std::{future::Future, io, time::Duration};
 
 use futures_util::future::Either;
