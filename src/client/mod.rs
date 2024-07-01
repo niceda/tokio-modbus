@@ -18,6 +18,9 @@ pub mod tcp;
 #[cfg(feature = "sync")]
 pub mod sync;
 
+#[cfg(feature = "rtu-over-tcp")]
+pub mod rtu_over_tcp;
+
 /// Transport independent asynchronous client trait
 #[async_trait]
 pub trait Client: SlaveContext + Send + Debug {
