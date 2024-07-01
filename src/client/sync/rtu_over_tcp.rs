@@ -3,7 +3,7 @@
 
 use std::{io::Result, net::SocketAddr, time::Duration};
 
-use crate::{client::rtu, Slave};
+use crate::Slave;
 
 use super::{block_on_with_timeout, Context};
 
@@ -40,7 +40,7 @@ pub fn connect_slave_with_timeout(
     let mock_serial = block_on_with_timeout(&runtime, timeout, async {
         TcpStream::connect(socket_addr).await
     })?;
-    let async_ctx = rtu::attach_slave(mock_serial, slave);
+    let async_ctx = crate::client::rtu::attach_slave(mock_serial, slave);
     let sync_ctx = Context {
         runtime,
         async_ctx,
