@@ -57,6 +57,7 @@ rustls = { version = "0.23.12", default-features = false, features = ["std"] }
 default = ["rtu", "tcp"]
 rtu = ["dep:futures-core", "futures-util/sink", "dep:smallvec", "dep:tokio-util"]
 tcp = ["dep:futures-core", "futures-util/sink", "tokio/net", "dep:tokio-util"]
+rtu-over-tcp = ["dep:futures-core", "futures-util/sink", "tokio/net", "dep:tokio-util"]
 rtu-sync = ["rtu", "sync", "dep:tokio-serial"]
 tcp-sync = ["tcp", "sync"]
 rtu-over-tcp-sync = ["rtu", "sync", "dep:tokio-serial"]
