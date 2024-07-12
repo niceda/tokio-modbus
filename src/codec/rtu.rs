@@ -3,7 +3,7 @@
 
 use std::io::{Cursor, Error, ErrorKind, Result};
 
-use byteorder::BigEndian;
+use byteorder::{BigEndian, LittleEndian};
 use smallvec::SmallVec;
 use tokio_util::codec::{Decoder, Encoder};
 
@@ -54,7 +54,7 @@ impl FrameDecoder {
 
         // Read trailing CRC and verify ADU
         let crc_result = Cursor::new(&crc_buf)
-            .read_u16::<BigEndian>()
+            .read_u16::<LittleEndian>()
             .and_then(|crc| check_crc(&adu_buf, crc));
 
         if let Err(err) = crc_result {
@@ -359,7 +359,7 @@ impl<'a> Encoder<RequestAdu<'a>> for ClientCodec {
         buf.put_u8(hdr.slave_id);
         buf.put_slice(&pdu_data);
         let crc = calc_crc(buf);
-        buf.put_u16(crc);
+        buf.put_u16_le(crc);
 
         let formatted_vec = buf
             .as_ref()
