@@ -111,7 +111,7 @@ pub type Address = u16;
 ///
 /// - `true` is equivalent to `ON`, `1` and `0xFF00`.
 /// - `false` is equivalent to `OFF`, `0` and `0x0000`.
-pub(crate) type Coil = bool;
+pub(crate) type Coil = u16;
 
 /// Modbus uses 16 bit for its data items.
 ///
@@ -575,7 +575,7 @@ mod tests {
         );
 
         assert_eq!(
-            WriteSingleCoil(0, true).function_code(),
+            WriteSingleCoil(0, 1).function_code(),
             FunctionCode::WriteSingleCoil
         );
         assert_eq!(
@@ -625,7 +625,7 @@ mod tests {
         );
 
         assert_eq!(
-            WriteSingleCoil(0x0, false).function_code(),
+            WriteSingleCoil(0x0, 0).function_code(),
             FunctionCode::WriteSingleCoil
         );
         assert_eq!(
